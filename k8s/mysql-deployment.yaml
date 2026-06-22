@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: {{ECR_URL}}/tienda-db:eks-v1
+          image: tienda-db-placeholder
           ports:
             - containerPort: 3306
           env:
