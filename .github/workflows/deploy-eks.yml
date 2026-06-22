@@ -34,6 +34,10 @@ jobs:
       run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
 
     - name: Deploy to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: tienda-frontend
+        IMAGE_TAG: latest
       run: |
-        kubectl rollout restart deployment tienda-frontend -n ${{ secrets.EKS_NAMESPACE }}
+        kubectl set image deployment/tienda-frontend tienda-frontend=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -n ${{ secrets.EKS_NAMESPACE }}
         kubectl rollout restart deployment tienda-backend -n ${{ secrets.EKS_NAMESPACE }}
